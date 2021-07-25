@@ -1,0 +1,96 @@
+----------------------------------------BOJ - 11650----------------------------------------
+
+ 
+L=[]
+n=int(input())
+ 
+for i in range(n):
+    a,b=input().split()
+    a=int(a)
+    b=int(b)
+    t=(a,b)
+    L.append(t)
+ 
+def ssort(x):
+    return x[0],x[1]
+ 
+L.sort(key=ssort)
+ 
+for k in L:
+    print(k[0],k[1],sep=' ')
+ 
+ 
+#### 다른 사람의 풀이 - park78041024
+#import sys
+#input = sys.stdin.readline
+#coords = [input() for _ in range(int(input()))] 파이썬의 포문에서 몇번 할래? 의 숫자를 먼저 받아옴을 배울 수 있음.
+#coords = sorted(coords, key = lambda coord: (int(coord.split()[0]), int(coord.split()[1])))
+ 
+#print(''.join(coords))
+ 
+ 
+#문자열 입력이 띄어쓰기니까 문자열을 띄어쓰기 스플릿시켜서 배열로 만든다음 그 요소를 비교하는 테크닉을 사용하였음
+
+
+
+
+
+
+----------------------------------------BOJ-2108----------------------------------------
+
+#입력에서 맥스값만이라도 받자
+import sys
+from sys import stdin
+
+
+n = int(stdin.readline())
+
+sum=0
+L=[0]*8001 # 계수 정렬
+min=4001
+max=-4001
+cntmax=0
+for i in range(n):
+    #sys.stdin.readline().strip()
+    k=int(sys.stdin.readline().strip())
+    L[k+4000]+=1
+    if cntmax < L[k+4000]:
+        cntmax=L[k+4000] #계수 맥스 찾기
+    sum+=k
+    if k <=min:
+        min=k
+    if k>=max:
+        max=k
+
+
+#중앙값 찾기 while cnt <= n-1//2 몫보다 작거나 같아지면!! 같은경우를 넣는이유는 n-1//2에서 끊기면 중앙값 전 인덱스를 반환할것이기 때문이다
+
+def findq(LL,cntmax):
+    maxindex=L.index(cntmax) #한바퀴 돌린다음에도 또 하는거라
+    for k in range(maxindex+1,len(LL)): #1개만 있는 경우도 포함하는 지 확인
+        if cntmax==LL[k]:
+            maxindex=k
+            break
+    return maxindex-4000   
+    
+cnt=0
+w=-1
+#잘 생각해보면 와일에 상수를 하나만 써도 더 빨라진다
+
+mid=(n-1)//2
+while cnt <= mid: #중앙값 찾기
+    w+=1
+    cnt+=L[w]
+
+ii=int((n-1)/2)
+m1=format((sum/n),".0f")
+m1=int(m1)
+m2=w-4000
+m3=findq(L,cntmax) #최빈값
+m4=max-min
+
+print(m1)
+print(m2)
+print(m3)
+print(m4)
+------------------------------------------------------------------------------------------------------------------------
