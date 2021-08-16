@@ -94,3 +94,59 @@ print(m2)
 print(m3)
 print(m4)
 ------------------------------------------------------------------------------------------------------------------------
+
+ 
+ 
+---------------------------프로그래머스 Lv.2 가장 큰 수----------------------------
+
+def merge(m,n,L):
+    mid=(m+n)//2
+    if m==n:
+        return
+    merge(m,mid,L)
+    merge(mid+1,n,L)
+    mergeSort(m,mid,n,L)
+    
+def mergeSort(m,mid,n,L):
+    i=m
+    j=mid+1
+    k=m
+    while i<=mid and j<=n:
+        if int(L[i]+L[j]) >= int(L[j]+L[i]):
+            sol[k]=L[i]
+            i+=1
+        else:
+            sol[k]=L[j]
+            j+=1
+        k+=1
+    
+    if i>mid:
+        while k<=n:
+            sol[k]=L[j]
+            j+=1
+            k+=1
+    elif j>n:
+        while k<=n:
+            sol[k]=L[i]
+            i+=1
+            k+=1
+    
+    for p in range(m,n+1):
+        L[p]=sol[p]
+            
+            
+def solution(numbers):
+    answer = ''
+    LL=[]
+    global sol
+    sol=[0]*len(numbers)
+
+    for i in numbers:
+        LL.append(str(i))
+
+    merge(0,len(LL)-1,LL)
+    if LL[0]=='0':
+        return '0'
+    for k in LL:
+        answer+=k
+    return answer
