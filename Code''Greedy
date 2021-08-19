@@ -87,3 +87,54 @@ while i<len(L):
 max=int(max)
 print(max)
  
+--------Programmers 큰 수 만들기
+def solution(number,k):
+    answer=''
+    L=[[]for i in range(10)]
+
+   #인덱스들을 크기 순으로 담는 과정
+    for i in range(len(number)):
+        j=int(number[i])
+        L[j].append(i)
+    
+    for q in range(10):
+        L[q].sort(reverse=True)
+
+#크기 순으로 담은 것들로 판단하기
+    st=0
+    while k>0:
+        p=9
+        dell=False
+        while p>=0:
+            if L[p] and dell==True:
+                while L[p] and L[p][-1]<mIndex:#맨 처음에 dell이 트루일수는 없구나...
+                    L[p].pop()
+            elif L[p] and st<=L[p][-1] and (st+k-1)>=L[p][-1]:
+                max=p
+                mIndex=L[p].pop()
+                dell=True
+            p-=1
+
+        if (st+k-1) >= len(number)-1: #자른거의 맨 뒤가 넘버의 맨 뒤란 뜻 > 이 경우는 그냥 k=0으로하면되나?
+            k=0
+        else:
+            if max < int(number[st+k]): #len(number)를 st+k가 능가한다면 여기서 에러가 났을것이다.
+                answer+=number[st+k:] #뒷 값 다 더하고 리턴 순서 바뀌면 안됌
+                k=0
+            else:
+                answer+=str(max)
+                k-=(mIndex-st) #k값의 변경
+                st=mIndex+1
+    return answer
+    
+:::::다른 사람의 풀이 -> 스택으로 처음부터 생각 할 수도 있다
+def solution(number, k):
+    stack = [number[0]]
+    for num in number[1:]:
+        while len(stack) > 0 and stack[-1] < num and k > 0:
+            k -= 1
+            stack.pop()
+        stack.append(num)
+    if k != 0:
+        stack = stack[:-k]
+    return ''.join(stack)
