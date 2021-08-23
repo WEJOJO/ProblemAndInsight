@@ -1,6 +1,70 @@
 DFS/BFS도 문제 유형을 보자마자 나누는것은 가능하겠다.
 다만 완전탐색과의 차이를 보면 내가 원하는 것만 따라서 순회 혹은 참조한다는 점이 매우 다르다고 볼 수있다.
 
+문제1.
+얼음물 얼려먹기
+
+---나동빈 코드
+n,m=input().split()
+n=int(n)
+m=int(m)
+L=[]
+for k in range(n):
+    L.append(list(map(int,input())))
+def DFS(x,y):
+    if x>=n or y>=m or x<0 or y<0:
+        return False
+    if L[x][y]==0:
+        L[x][y]=1
+        DFS(x+1,y)
+        DFS(x,y+1)
+        DFS(x-1,y)
+        DFS(x,y-1)
+        return True
+    return False
+cnt=0
+for i in range(n):
+    for j in range(m):
+        if DFS(i,j)==True:
+            cnt+=1
+print(cnt)
+
+---내 코드-->> 순회호출 시에만 카운트하는 아이디어 적용
+n,m=input().split()
+n=int(n)
+m=int(m)
+L=[]
+for i in range(n):
+    L.append(list(map(int,input())))
+
+#DFS는 0값이 아니면 방문하지 않도록 하자
+def DFS(y,x): #가로 세로를 받아서 한다
+    #선 방문
+    if y>=n or x>=m or x<0 or y<0:
+        return
+    if L[y][x]==1:
+        return 
+
+    L[y][x]=1
+    #벽을 만나면 아무것도 안할거 > 잘못되었다, 이프로 넣어야되네
+    #결국 종결조건은 1은 만나면 무르도록 해야겠네
+    DFS(y,x+1)
+    DFS(y+1,x)
+    DFS(y,x-1)
+    DFS(y-1,x)
+
+cnt=0
+for k in range(n):
+    for p in range(m):
+        if L[k][p]==0:
+            DFS(k,p)
+            cnt+=1
+print(cnt)
+
+
+
+
+
 문제2. 
 미로탈출 문제
 
