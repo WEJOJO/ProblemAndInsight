@@ -68,6 +68,7 @@ print(cnt)
 문제2. 
 미로탈출 문제
 
+-----첫 번째 시도의 내 풀이-----
 m,n=input().split()
 
 m=int(m)
@@ -104,3 +105,59 @@ def dfs(y,x):
         return min+1
 
 print(dfs(0,0))
+
+::::: 이 방식은 하나당 방향이 3번이라 하면 3^^40000이라는 말도안되는 최대연산 수를 가지므로 문제풀이의 입장에서 보면 완전히 잘못된 알고리즘이다.
+>> 이를 개선하기 위한 방안으로 나동빈 풀이를 적용해 나만의 방식으로 아래 구현해보았다
+
+----두 번째 시도의 내 풀이-----
+from collections import deque
+
+queue=deque('')
+
+n,m=input().split()
+n=int(n)
+m=int(m)
+
+L=[]
+for i in range(n):
+    L.append(list(map(int,input())))
+
+def DFS(y,x): #cnt는 한 번의 큐에 담을 때 몇개 담는지 #최초의 cnt==1로 담을것
+    max=0
+    
+    queue.append(str(y)+str(x)) #튜플을 담는게 가능한건가 #
+    cnt=1
+    while len(queue)!=0:
+        t=queue.popleft() #'12'와 같이 y,x의 좌표를 담고있음
+        yy=int(t[0])
+        xx=int(t[1])
+        cnt-=1
+        # 무조건 맥스값을 더하는거는 하지말고 L[]==1인 부분까지 추가해서 고려하자
+        if L[yy][xx]==1:
+            L[yy][xx]+=max
+            if cnt==0:
+                max+=1
+                cntBool=True
+
+            if (xx+1<m) and L[yy][xx+1]==1:
+                queue.append(str(yy)+str(xx+1))
+            if (yy+1)<n and L[yy+1][xx]==1:
+                queue.append(str(yy+1)+str(xx))
+            if (xx-1>=0) and L[yy][xx-1]==1:
+                queue.append(str(yy)+str(xx-1))
+            if (yy-1)>=0 and L[yy-1][xx]==1:
+                queue.append(str(yy-1)+str(xx))
+            if cntBool:
+                cnt=len(queue)
+                cntBool=False
+
+DFS(0,0)
+print(L)
+print(L[n-1][m-1])
+
+::::: 배열은 왼쪽,그리고 위에서부터 차례로 탐색을 하는 성질이있으나 이런 류의 문제에서는 오른쪽 그리고 아래에서 먼저 탐색되어야 하는 경우가 있기 때문에
+큐를 자연스레 연상하게 된 점은 잘한 점이다.
+다만 구현방식이 조금 더러운 게 고칠 점이 있다고 보임. >>> cntBool을 이용해서 이 전에 가지고 있던 값들에 대해서만 숫자를 늘리는 방안을 사용했다.
+
+-----나동빈 강의 모범답안-----
+
