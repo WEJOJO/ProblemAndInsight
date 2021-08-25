@@ -161,3 +161,42 @@ print(L[n-1][m-1])
 
 -----나동빈 강의 모범답안-----
 
+from collections import deque
+
+
+
+n,m=input().split()
+n=int(n)
+m=int(m)
+
+dx=[-1,1,0,0]
+dy=[0,0,-1,1]
+
+L=[]
+for i in range(n):
+    L.append(list(map(int,input())))
+
+def DFS(y,x): #cnt는 한 번의 큐에 담을 때 몇개 담는지 #최초의 cnt==1로 담을것
+    queue=deque()
+    queue.append((y,x))
+
+    while queue:
+        y,x=queue.popleft() #튜플로 되네...
+        for i in range(4):
+            ny=y+dy[i]
+            nx=x+dx[i]
+            
+            if ny<0 or ny>=n or nx<0 or nx>=m:
+                continue #반복문 재진입을 의미함
+            if L[ny][nx]==0:
+                continue
+            if L[ny][nx]==1:
+                L[ny][nx]=L[y][x]+1
+                queue.append((ny,nx))
+    return L[n-1][m-1]
+
+print(DFS(0,0))
+print(L)
+
+::::: 튜플도 덱에서 사용 가능하다는 점.
+벡터값을 통해 하나씩 조사해서 이 전의 xy를 하나의 함수 내에서 기억하고 있다는 점 그리고 그걸 기반으로 +1을 해서 큐 하나에 같은 x,y의 +1을 해서  코드를 깔끔하게 한다는 점...
